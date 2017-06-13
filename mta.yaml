@@ -1,0 +1,30 @@
+ID: mtaTest
+_schema-version: '2.0'
+version: 0.0.1
+
+modules:
+ - name: hdbTest
+   type: hdb
+   path: hdbTest
+   requires:
+    - name: hdi-container
+
+
+ - name: javaTest
+   type: java
+   path: javaTest
+   provides:
+    - name: javaTest_api
+      properties:
+         url: ${default-url}
+   requires:
+    - name: hdi-container
+      properties:
+         JBP_CONFIG_RESOURCE_CONFIGURATION: '[tomcat/webapps/ROOT/META-INF/context.xml:
+            {"service_name_for_DefaultDB" : "~{hdi-container-name}"}]'
+
+resources:
+ - name: hdi-container
+   properties:
+      hdi-container-name: ${service-name}
+   type: com.sap.xs.hdi-container
